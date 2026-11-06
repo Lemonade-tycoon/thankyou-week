@@ -1,0 +1,384 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex">
+<title>Thank-You Admin</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,800&family=Caveat:wght@500;700&family=IBM+Plex+Mono:wght@500;600&family=Figtree:wght@400;600;800&display=swap">
+<link rel="stylesheet" href="/profile.css">
+<script src="/qrcode.min.js"></script>
+<style>
+:root{--bg:#eef0f4;--surface:#fff;--fg:#1d2230;--muted:#5d6577;--line:#d6dae3;--accent:#e2553d;--accent-ink:#fff;--ok:#1d8a5b;--warn:#b5462f;
+  --note:#ffe577;--note-ink:#2b2414;color-scheme:light}
+@media (prefers-color-scheme:dark){:root{--bg:#14161d;--surface:#1d2029;--fg:#e8eaf0;--muted:#9aa1b2;--line:#2e3240;--accent:#ff7a5f;--accent-ink:#1a0d08;--ok:#4fc58f;--warn:#ff8a73;color-scheme:dark}}
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+body{margin:0;background:var(--bg);color:var(--fg);font:15px/1.5 "Figtree",system-ui,sans-serif}
+h1,h2,h3{font-family:"Bricolage Grotesque",system-ui,sans-serif;margin:0;text-wrap:balance}
+button,.btn{font:600 14px "Figtree",sans-serif;border:1px solid var(--line);background:var(--surface);color:var(--fg);padding:8px 12px;border-radius:8px;cursor:pointer;display:inline-flex;align-items:center;gap:6px}
+.primary{background:var(--accent);color:var(--accent-ink);border-color:var(--accent)}
+.danger{color:var(--warn)}
+button:focus-visible,.btn:focus-visible,input:focus-visible,textarea:focus-visible,select:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+label.f{display:grid;gap:4px;font-size:13px;color:var(--muted)}
+label.f input,label.f textarea,label.f select{font:15px "Figtree",sans-serif;color:var(--fg);background:var(--bg);border:1px solid var(--line);border-radius:8px;padding:8px 10px;width:100%}
+label.f textarea{resize:vertical;min-height:58px}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+@media (max-width:560px){.two{grid-template-columns:1fr}}
+.small{font-size:12px;color:var(--muted);margin:0}
+
+/* login */
+#login{min-height:100vh;display:grid;place-items:center;padding:24px 16px}
+#login form{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:28px;width:100%;max-width:360px;display:grid;gap:14px}
+#login .err{color:var(--warn);font-size:13px;min-height:1.3em}
+
+/* app */
+header.bar{position:sticky;top:0;z-index:5;background:var(--surface);border-bottom:1px solid var(--line);padding:10px max(16px,env(safe-area-inset-right)) 10px max(16px,env(safe-area-inset-left));
+  display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+header.bar h1{font-size:20px;margin-right:auto}
+.status{font-size:13px;font-weight:600;color:var(--muted)}
+.status.dirty{color:var(--warn)}
+.status.saved{color:var(--ok)}
+.layout{display:grid;grid-template-columns:240px minmax(0,1fr);gap:0;min-height:calc(100vh - 58px)}
+@media (max-width:900px){.layout{grid-template-columns:1fr}}
+nav.list{border-right:1px solid var(--line);padding:14px;display:grid;gap:12px;align-content:start;background:var(--surface);max-height:calc(100vh - 58px);overflow:auto;position:sticky;top:58px}
+@media (max-width:900px){nav.list{position:static;max-height:260px;border-right:0;border-bottom:1px solid var(--line)}}
+nav.list input{font:14px "Figtree",sans-serif;padding:8px 10px;border-radius:8px;border:1px solid var(--line);background:var(--bg);color:var(--fg);width:100%}
+.group h3{font:600 11px "IBM Plex Mono",monospace;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin:6px 0 4px;display:flex;align-items:center;gap:6px}
+.group h3 i{width:9px;height:9px;border-radius:50%;display:inline-block}
+.person{display:flex;justify-content:space-between;width:100%;border:0;background:none;padding:6px 8px;border-radius:6px;text-align:left;font-weight:600}
+.person:hover{background:var(--bg)}
+.person[aria-current="true"]{background:var(--fg);color:var(--bg)}
+.person small{font:600 12px "IBM Plex Mono",monospace;opacity:.7}
+.person .gif{font-size:10px;opacity:.6;margin-left:4px}
+main.work{padding:20px max(16px,env(safe-area-inset-right)) 60px max(16px,env(safe-area-inset-left));display:grid;grid-template-columns:minmax(0,1fr) 380px;gap:24px;align-items:start}
+@media (max-width:1180px){main.work{grid-template-columns:1fr}}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:18px;display:grid;gap:12px;min-width:0}
+.edit{display:grid;gap:16px;min-width:0}
+.row{display:grid;grid-template-columns:100px 1fr 34px;align-items:center;gap:10px;font-size:14px}
+.row output{font:600 14px "IBM Plex Mono",monospace;text-align:right}
+input[type=range]{width:100%;accent-color:var(--accent)}
+.btns{display:flex;flex-wrap:wrap;gap:8px}
+.preview{display:grid;gap:18px;justify-items:center;position:sticky;top:76px}
+@media (max-width:1180px){.preview{position:static}}
+.problems{color:var(--warn);font-size:13px;margin:0;padding-left:18px}
+
+/* sticky note (3in square) */
+.note{width:76mm;height:76mm;background:var(--note);color:var(--note-ink);padding:5mm 5mm 4mm;display:grid;grid-template-rows:auto 1fr auto;gap:2mm;font-family:"Caveat",cursive;overflow:hidden}
+.preview .note{box-shadow:0 10px 18px -8px rgba(60,45,0,.35);transform:rotate(-1.2deg);max-width:100%}
+.note .dear{font-size:19px;line-height:1.05;font-weight:700}
+.note .riddle{font-size:17px;line-height:1.1;align-self:center}
+.note .bottom{display:flex;gap:3mm;align-items:end;justify-content:space-between}
+.note .hint{font-size:15px;line-height:1.05}
+.note .qr{background:#fff;padding:3px;line-height:0}
+.note .qr img,.note .qr canvas{width:20mm!important;height:20mm!important}
+.note .scan{font:600 7px/1 "IBM Plex Mono",monospace;letter-spacing:.06em;text-transform:uppercase;text-align:center;margin-top:2px}
+
+dialog{border:1px solid var(--line);border-radius:14px;background:var(--surface);color:var(--fg);padding:22px;max-width:520px;width:calc(100% - 32px)}
+dialog::backdrop{background:rgba(0,0,0,.45)}
+dialog form{display:grid;gap:12px}
+dialog ol{margin:0;padding-left:20px;display:grid;gap:4px}
+
+/* print: sticky notes, 6 per A4 page, dashed cut lines */
+#printArea{display:none}
+@media print{
+  @page{size:A4;margin:12mm}
+  body{background:#fff}
+  #app,#login,dialog{display:none!important}
+  #printArea{display:block}
+  .sheet{display:grid;grid-template-columns:76mm 76mm;grid-auto-rows:76mm;justify-content:center;break-after:page}
+  .sheet .note{border:1px dashed #999;margin:-.5px;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+}
+</style>
+</head>
+<body>
+
+<section id="login">
+  <form id="loginForm">
+    <h1>Thank-You Admin</h1>
+    <p class="small">Enter your admin password to edit ratings, GIFs and riddles.</p>
+    <label class="f">Admin password<input id="pw" type="password" autocomplete="current-password" required></label>
+    <button class="primary" type="submit" id="loginBtn">Unlock</button>
+    <div class="err" id="loginErr" role="status"></div>
+  </form>
+</section>
+
+<div id="app" hidden>
+  <header class="bar">
+    <h1>Thank-You Admin</h1>
+    <span class="status" id="status"></span>
+    <button type="button" id="bPrint">Print sticky notes</button>
+    <button type="button" id="bSettings">Settings</button>
+    <button type="button" class="primary" id="bPublish">Publish changes</button>
+  </header>
+  <div class="layout">
+    <nav class="list" aria-label="People">
+      <input id="search" type="search" placeholder="Search names" aria-label="Search names">
+      <div id="groups"></div>
+      <button type="button" id="bAdd">+ Add a person</button>
+    </nav>
+    <main class="work">
+      <div class="edit">
+        <div class="card">
+          <h2 id="eTitle"></h2>
+          <div class="two">
+            <label class="f">Name<input id="iName" type="text"></label>
+            <label class="f">Team<select id="iTeam"></select></label>
+          </div>
+          <div class="two">
+            <label class="f">Position / nickname<input id="iRole" type="text"></label>
+            <label class="f">Signature move<input id="iMove" type="text"></label>
+          </div>
+        </div>
+        <div class="card">
+          <h3>GIF or meme</h3>
+          <label class="f">Paste a link (Giphy, Tenor, Imgur, or any image link starting with https://)<input id="iMedia" type="url" placeholder="https://media.giphy.com/media/…/giphy.gif"></label>
+          <div class="btns">
+            <button type="button" class="primary" id="bUse">Use link</button>
+            <label class="btn" for="iFile">Upload from computer</label>
+            <input id="iFile" type="file" accept="image/*" hidden>
+            <button type="button" id="bClear">Remove</button>
+          </div>
+          <p class="small">Tip: on Giphy, open the GIF, then right-click it and choose "Copy image address". Uploads must be under 1.5 MB, so links are better for big GIFs.</p>
+        </div>
+        <div class="card">
+          <h3>Ratings</h3>
+          <div id="sliders" style="display:grid;gap:10px"></div>
+        </div>
+        <div class="card">
+          <label class="f">Scouting report (why you're thankful)<textarea id="iWhy" rows="3"></textarea></label>
+        </div>
+        <div class="card">
+          <h3>Riddle (printed on their sticky note)</h3>
+          <label class="f">Riddle<textarea id="iRiddle" rows="2"></textarea></label>
+          <div class="two">
+            <label class="f">Hint<input id="iHint" type="text"></label>
+            <label class="f">Answer = their password<input id="iAns" type="text"></label>
+          </div>
+          <label class="f">Other accepted answers (comma separated, optional)<input id="iAliases" type="text" placeholder="e.g. wi-fi, internet"></label>
+          <ul class="problems" id="problems"></ul>
+        </div>
+        <div class="btns"><button type="button" class="danger" id="bDelete">Remove this person</button></div>
+      </div>
+      <aside class="preview" aria-label="Preview">
+        <div id="pvProfile"></div>
+        <article class="note" id="pvNote"></article>
+      </aside>
+    </main>
+  </div>
+</div>
+
+<dialog id="dPublish">
+  <form method="dialog">
+    <h2>Publish changes</h2>
+    <div id="pubDirect" hidden>
+      <p class="small">This saves straight to your GitHub repo. Vercel updates the live site in about a minute.</p>
+    </div>
+    <div id="pubManual">
+      <p class="small">Your changes go live when the new data file is in your GitHub repo:</p>
+      <ol>
+        <li>Click <b>Download data.json</b> below.</li>
+        <li>Open your repo on GitHub, click <b>Add file → Upload files</b>.</li>
+        <li>Drop in <b>data.json</b> and click <b>Commit changes</b>.</li>
+        <li>Vercel updates the live site in about a minute.</li>
+      </ol>
+      <p class="small">Want one-click publishing instead? Add a GitHub token in Settings.</p>
+    </div>
+    <ul class="problems" id="pubProblems"></ul>
+    <div class="status" id="pubStatus" role="status"></div>
+    <div class="btns">
+      <button type="button" class="primary" id="bDoPublish">Download data.json</button>
+      <button value="close">Close</button>
+    </div>
+  </form>
+</dialog>
+
+<dialog id="dSettings">
+  <form method="dialog" id="settingsForm">
+    <h2>Settings</h2>
+    <label class="f">New admin password (leave empty to keep the current one)<input id="sPw" type="text" autocomplete="new-password"></label>
+    <h3>One-click publishing (optional)</h3>
+    <p class="small">Saved only in this browser. Use a GitHub fine-grained token with "Contents: read and write" on just this repo.</p>
+    <label class="f">GitHub repo (owner/name)<input id="sRepo" type="text" placeholder="Lemonade-tycoon/thankyou-week"></label>
+    <label class="f">GitHub token<input id="sToken" type="password" autocomplete="off"></label>
+    <div class="btns"><button class="primary" value="save">Save settings</button><button value="cancel">Cancel</button></div>
+  </form>
+</dialog>
+
+<dialog id="dConfirm">
+  <form method="dialog">
+    <h2 id="cTitle"></h2>
+    <p class="small" id="cText"></p>
+    <div class="btns"><button class="primary danger" value="yes" id="cYes">Remove</button><button value="no">Cancel</button></div>
+  </form>
+</dialog>
+
+<div id="printArea"></div>
+
+<script type="module">
+import { STATS, TEAMS, ovr, buildData, adminOpen, validate, profileHTML, norm } from "/lib.js";
+const $ = (id) => document.getElementById(id);
+const store = { get(k){ try { return localStorage.getItem(k); } catch { return null; } }, set(k,v){ try { localStorage.setItem(k,v); } catch {} }, del(k){ try { localStorage.removeItem(k); } catch {} } };
+const esc = (s) => String(s ?? "").replace(/[&<>"']/g, (c) => ({ "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;" }[c]));
+const PORTAL = location.origin + "/";
+let data, people = [], cur = 0, adminPw = "", dirty = false;
+
+// ---------- login ----------
+$("loginForm").addEventListener("submit", async (e) => {
+  e.preventDefault();
+  $("loginBtn").disabled = true; $("loginErr").textContent = "Unlocking…";
+  try {
+    data = await (await fetch("/data.json", { cache: "no-store" })).json();
+    const opened = await adminOpen(data, $("pw").value);
+    adminPw = $("pw").value;
+    const draft = store.get("thx-draft");
+    people = opened.people;
+    if (draft) { try { const d = JSON.parse(draft); if (Array.isArray(d.people)) { people = d.people; dirty = true; } } catch {} }
+    $("login").hidden = true; $("app").hidden = false;
+    renderAll(); setStatus();
+  } catch {
+    $("loginErr").textContent = "That password didn't work. Try again.";
+  } finally { $("loginBtn").disabled = false; }
+});
+
+// ---------- state ----------
+function touch() { dirty = true; store.set("thx-draft", JSON.stringify({ people })); setStatus(); }
+function setStatus(msg) {
+  const s = $("status");
+  s.className = "status " + (msg ? "saved" : dirty ? "dirty" : "");
+  s.textContent = msg || (dirty ? "Unpublished changes (saved in this browser)" : "Everything is published");
+}
+window.addEventListener("beforeunload", (e) => { if (dirty) { e.preventDefault(); e.returnValue = ""; } });
+
+// ---------- list ----------
+function renderList() {
+  const q = norm($("search").value);
+  $("groups").innerHTML = Object.keys(TEAMS).concat([...new Set(people.map(p=>p.team))].filter(t=>!TEAMS[t])).map((team) => {
+    const rows = people.map((p, i) => ({ p, i })).filter(({ p }) => p.team === team && (!q || norm(p.name).includes(q)));
+    if (!rows.length) return "";
+    return `<div class="group"><h3><i style="background:${TEAMS[team]||"#888"}"></i>${esc(team)}</h3>${rows.map(({ p, i }) =>
+      `<button type="button" class="person" data-i="${i}" aria-current="${i===cur}"><span>${esc(p.name)}${p.media?'<span class="gif">GIF</span>':""}</span><small>${ovr(p.s)}</small></button>`).join("")}</div>`;
+  }).join("");
+  $("groups").querySelectorAll(".person").forEach((b) => b.onclick = () => { cur = +b.dataset.i; renderAll(); window.scrollTo({ top: 0 }); });
+}
+$("search").oninput = renderList;
+
+// ---------- editor ----------
+function renderEditor() {
+  const p = people[cur]; if (!p) return;
+  $("eTitle").textContent = "Editing " + p.name;
+  $("iTeam").innerHTML = Object.keys(TEAMS).map((t) => `<option${t===p.team?" selected":""}>${esc(t)}</option>`).join("");
+  const bind = (id, key, after) => { $(id).value = p[key] ?? ""; $(id).oninput = (e) => { p[key] = e.target.value; touch(); after && after(); }; };
+  bind("iName", "name", () => { $("eTitle").textContent = "Editing " + p.name; renderList(); renderPreview(); });
+  $("iTeam").onchange = (e) => { p.team = e.target.value; touch(); renderList(); renderPreview(); };
+  bind("iRole", "role", renderPreview); bind("iMove", "move", renderPreview); bind("iWhy", "why", renderPreview);
+  bind("iRiddle", "riddle", renderNote); bind("iHint", "hint", renderNote); bind("iAns", "answer", renderProblems);
+  $("iAliases").value = (p.aliases || []).join(", ");
+  $("iAliases").oninput = (e) => { p.aliases = e.target.value.split(",").map((s) => s.trim()).filter(Boolean); touch(); renderProblems(); };
+  $("iMedia").value = p.media && !p.media.startsWith("data:") ? p.media : "";
+  $("sliders").innerHTML = p.s.map((v, i) => `<div class="row"><label for="s${i}">${STATS[i]}</label><input type="range" id="s${i}" min="1" max="99" value="${v}"><output id="o${i}">${v}</output></div>`).join("");
+  p.s.forEach((_, i) => $("s" + i).oninput = (e) => { p.s[i] = +e.target.value; $("o" + i).textContent = p.s[i]; touch(); renderPreview(); renderList(); });
+  renderProblems();
+}
+function renderProblems() {
+  const all = validate(people);
+  $("problems").innerHTML = all.map((t) => `<li>${esc(t)}</li>`).join("");
+}
+$("bUse").onclick = () => {
+  const v = $("iMedia").value.trim();
+  if (!/^https:\/\//i.test(v)) { $("iMedia").setCustomValidity("Paste a link that starts with https://"); $("iMedia").reportValidity(); return; }
+  $("iMedia").setCustomValidity(""); people[cur].media = v; touch(); renderPreview(); renderList();
+};
+$("iMedia").oninput = () => $("iMedia").setCustomValidity("");
+$("bClear").onclick = () => { people[cur].media = ""; $("iMedia").value = ""; touch(); renderPreview(); renderList(); };
+$("iFile").onchange = (e) => {
+  const f = e.target.files[0]; e.target.value = ""; if (!f) return;
+  if (f.size > 1.5 * 1024 * 1024) { setStatus(); $("status").className = "status dirty"; $("status").textContent = "That file is over 1.5 MB. Paste a Giphy or Tenor link instead."; return; }
+  const r = new FileReader(); r.onload = () => { people[cur].media = r.result; touch(); renderPreview(); renderList(); }; r.readAsDataURL(f);
+};
+$("bAdd").onclick = () => {
+  people.push({ name: "New person", team: "IT", role: "Thank-You MVP", move: "", why: "", media: "", s: [85,85,85,85,85,85], riddle: "", hint: "", answer: "", aliases: [] });
+  cur = people.length - 1; touch(); renderAll(); $("iName").select();
+};
+$("bDelete").onclick = () => {
+  $("cTitle").textContent = `Remove ${people[cur].name}?`;
+  $("cText").textContent = "Their profile and riddle will be deleted when you publish.";
+  $("dConfirm").returnValue = ""; $("dConfirm").showModal();
+};
+$("dConfirm").addEventListener("close", () => {
+  if ($("dConfirm").returnValue !== "yes") return;
+  people.splice(cur, 1); cur = Math.max(0, cur - 1); touch(); renderAll();
+});
+
+// ---------- preview ----------
+function noteHTML(p) {
+  return `<div class="dear">Dear ${esc(p.name)},<br>please answer this riddle:</div>
+    <div class="riddle">“${esc(p.riddle)}”</div>
+    <div class="bottom"><div class="hint"><b>Hint:</b> ${esc(p.hint)}</div><div><div class="qr"></div><div class="scan">scan for your stats</div></div></div>`;
+}
+function drawQR(el) { if (window.QRCode) new QRCode(el, { text: PORTAL, width: 160, height: 160, correctLevel: QRCode.CorrectLevel.M }); }
+function renderPreview() { const p = people[cur]; if (p) $("pvProfile").innerHTML = profileHTML(p); }
+function renderNote() { const p = people[cur]; if (!p) return; $("pvNote").innerHTML = noteHTML(p); drawQR($("pvNote").querySelector(".qr")); }
+function renderAll() { renderList(); renderEditor(); renderPreview(); renderNote(); }
+
+// ---------- print ----------
+$("bPrint").onclick = () => {
+  const area = $("printArea"); area.innerHTML = "";
+  for (let i = 0; i < people.length; i += 6) {
+    const sheet = document.createElement("div"); sheet.className = "sheet";
+    sheet.innerHTML = people.slice(i, i + 6).map((p) => `<article class="note">${noteHTML(p)}</article>`).join("");
+    area.appendChild(sheet);
+  }
+  area.querySelectorAll(".qr").forEach(drawQR);
+  setTimeout(() => window.print(), 300);
+};
+
+// ---------- settings ----------
+$("bSettings").onclick = () => { $("sRepo").value = store.get("thx-repo") || ""; $("sToken").value = store.get("thx-token") || ""; $("sPw").value = ""; $("dSettings").showModal(); };
+$("dSettings").addEventListener("close", () => {
+  if ($("dSettings").returnValue !== "save") return;
+  store.set("thx-repo", $("sRepo").value.trim()); store.set("thx-token", $("sToken").value.trim());
+  if ($("sPw").value.trim()) { adminPw = $("sPw").value.trim(); touch(); setStatus(); $("status").textContent = "New admin password set. Publish to make it take effect."; $("status").className = "status dirty"; }
+});
+
+// ---------- publish ----------
+const direct = () => store.get("thx-repo") && store.get("thx-token");
+$("bPublish").onclick = () => {
+  const probs = validate(people);
+  $("pubProblems").innerHTML = probs.map((t) => `<li>${esc(t)}</li>`).join("");
+  $("bDoPublish").disabled = probs.length > 0;
+  $("pubDirect").hidden = !direct(); $("pubManual").hidden = !!direct();
+  $("bDoPublish").textContent = direct() ? "Publish now" : "Download data.json";
+  $("pubStatus").textContent = probs.length ? "Fix the problems above first." : "";
+  $("dPublish").showModal();
+};
+$("bDoPublish").onclick = async () => {
+  $("bDoPublish").disabled = true; $("pubStatus").className = "status"; $("pubStatus").textContent = "Locking every profile…";
+  try {
+    const json = JSON.stringify(await buildData(people, adminPw));
+    if (direct()) {
+      const repo = store.get("thx-repo"), token = store.get("thx-token");
+      const api = `https://api.github.com/repos/${repo}/contents/data.json`;
+      const h = { Authorization: `Bearer ${token}`, Accept: "application/vnd.github+json" };
+      $("pubStatus").textContent = "Saving to GitHub…";
+      const cur = await fetch(api, { headers: h });
+      const sha = cur.ok ? (await cur.json()).sha : undefined;
+      const bytes = new TextEncoder().encode(json); let bin = ""; for (let i = 0; i < bytes.length; i += 0x8000) bin += String.fromCharCode(...bytes.subarray(i, i + 0x8000));
+      const r = await fetch(api, { method: "PUT", headers: h, body: JSON.stringify({ message: "Update thank-you data", content: btoa(bin), sha }) });
+      if (!r.ok) throw new Error(`GitHub said ${r.status}. Check the repo name and token in Settings.`);
+      $("pubStatus").textContent = "Published! The live site updates in about a minute.";
+    } else {
+      const a = document.createElement("a");
+      a.href = URL.createObjectURL(new Blob([json], { type: "application/json" })); a.download = "data.json"; a.click();
+      $("pubStatus").textContent = "Downloaded. Now upload it to your GitHub repo (steps above).";
+    }
+    $("pubStatus").className = "status saved";
+    dirty = false; store.del("thx-draft"); setStatus("Published");
+  } catch (err) {
+    $("pubStatus").className = "status dirty"; $("pubStatus").textContent = err.message || "Publishing failed. Try again.";
+  } finally { $("bDoPublish").disabled = false; }
+};
+</script>
+</body>
+</html>

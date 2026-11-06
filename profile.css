@@ -1,0 +1,32 @@
+/* Player profile card, shared by the portal and the admin preview */
+.pf{--team:#2f6fed;--pf-bg:#fbfaf6;--pf-ink:#17181d;--pf-soft:#6a6d78;--pf-line:#e6e3da;
+  width:360px;max-width:100%;background:var(--pf-bg);color:var(--pf-ink);border-radius:26px;overflow:hidden;
+  box-shadow:0 30px 50px -28px rgba(0,0,0,.5);border:1px solid var(--pf-line);font-family:"Figtree",system-ui,sans-serif;text-align:left}
+.pf .media{position:relative;aspect-ratio:4/3;background:
+  repeating-linear-gradient(135deg,color-mix(in srgb,var(--team) 22%,#fff) 0 14px,color-mix(in srgb,var(--team) 11%,#fff) 14px 28px)}
+.pf .media img{width:100%;height:100%;object-fit:cover;display:block}
+.pf .mono{position:absolute;inset:0;display:grid;place-items:center;font:800 88px/1 "Bricolage Grotesque",system-ui,sans-serif;color:color-mix(in srgb,var(--team) 75%,#000);opacity:.85}
+.pf .teamchip{position:absolute;top:12px;left:12px;background:var(--team);color:#fff;font:800 11px/1 "Figtree",sans-serif;letter-spacing:.12em;text-transform:uppercase;padding:7px 10px;border-radius:99px}
+.pf .ovr{position:absolute;right:14px;bottom:-32px;width:82px;height:82px;border-radius:50%;background:var(--team);color:#fff;
+  display:grid;place-items:center;align-content:center;border:4px solid var(--pf-bg);text-align:center}
+.pf .ovr b{font:800 34px/1 "Bricolage Grotesque",sans-serif}
+.pf .ovr span{font:600 8px/1 "IBM Plex Mono",monospace;letter-spacing:.14em;margin-top:2px}
+.pf .pf-body{padding:14px 20px 22px;display:grid;gap:14px}
+.pf .pname{font:800 36px/1 "Bricolage Grotesque",sans-serif;letter-spacing:-.02em;padding-right:88px;overflow-wrap:anywhere}
+.pf .prole{font:600 12px "IBM Plex Mono",monospace;letter-spacing:.1em;text-transform:uppercase;color:var(--team);margin-top:5px}
+.pf .facts{display:grid;grid-template-columns:auto 1fr;gap:4px 14px;font-size:13px;padding:10px 12px;border-radius:12px;margin:0;background:color-mix(in srgb,var(--team) 8%,var(--pf-bg))}
+.pf .facts dt{font:600 10px/1.9 "IBM Plex Mono",monospace;letter-spacing:.1em;text-transform:uppercase;color:var(--pf-soft)}
+.pf .facts dd{margin:0;font-weight:600}
+.pf .stats{display:grid;gap:9px;font-variant-numeric:tabular-nums}
+.pf .stat{display:grid;grid-template-columns:92px 1fr 30px;align-items:center;gap:10px;font-size:13px;font-weight:600}
+.pf .stat b{font:800 17px "Bricolage Grotesque",sans-serif;text-align:right}
+.pf .segs{display:grid;grid-template-columns:repeat(10,1fr);gap:3px}
+.pf .segs i{height:9px;border-radius:2px;background:var(--pf-line)}
+.pf .segs i.on{background:var(--team)}
+.pf.reveal .segs i.on{animation:fillseg .35s both;animation-delay:var(--d)}
+@keyframes fillseg{from{background:var(--pf-line);transform:scaleY(.4)}to{background:var(--team);transform:none}}
+.pf .report{border-top:1px dashed var(--pf-line);padding-top:12px}
+.pf .report .k{font:600 10px "IBM Plex Mono",monospace;letter-spacing:.12em;text-transform:uppercase;color:var(--pf-soft)}
+.pf .report p{margin:4px 0 0;font-size:14px;line-height:1.5}
+.pf .sign{font:700 28px/1 "Caveat",cursive;color:var(--team);text-align:right;transform:rotate(-3deg)}
+@media (prefers-reduced-motion:reduce){.pf.reveal .segs i.on{animation:none}}
